@@ -2,7 +2,12 @@ const { redCVS } = require("./src/core");
 
 function fixtureCSV(
   arrayCsvFile,
-  options = { showSave: false, delimiter: ";", basePath: undefined }
+  options = {
+    showSave: false,
+    delimiter: ";",
+    basePath: undefined,
+    skipUndefined: true
+  }
 ) {
   // Promise all puede ser mala idea, salen juntas
   let promises = [];

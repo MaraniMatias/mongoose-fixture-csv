@@ -8,36 +8,6 @@ npm install mongoose-fixture-csv
 
 ## Using
 
-__Mongoose Model__
-
-```javascript
-const UsuarioSchema = new Schema({
-  name:  String,
-  mail: String,
-  password: String
-});
-
-UsuarioSchema.pre("save", function(next) {
-  if (this.isModified("password")) {
-    this.password = crypto
-      .createHash("sha256")
-      .update(this.password)
-      .digest("hex");
-  }
-  next();
-});
-
-module.exports = mongoose.model("Usuarios", UsuarioSchema);
-```
-
-__CSV File__
-
-|nombre|mail|password|
-|------|----|--------|
-|Matias|admin@gmail.com|123456|
-|Ezequiel|usuario@mail.com|123456|
-
-
 __You fixture file__
 
 ```javascript
@@ -72,3 +42,42 @@ mongoose.connect(
 );
 ```
 
+__Mongoose Model__
+
+```javascript
+const schema = new Schema({
+  name:  String,
+  mail: String,
+  password: String
+});
+
+schema.pre("save", function(next) {
+  if (this.isModified("password")) {
+    this.password = crypto
+      .createHash("sha256")
+      .update(this.password)
+      .digest("hex");
+  }
+  next();
+});
+
+module.exports = mongoose.model("Usuarios", schema);
+```
+
+__CSV File__
+
+nombre;mail;password
+Matias;admin@gmail.com;123456
+Ezequiel;usuario@mail.com;123456
+
+
+__Fixture Options__
+
+```javascript
+options = {
+  showSave: false,
+  delimiter: ";",
+  basePath: undefined,
+  skipUndefined: true
+}
+```

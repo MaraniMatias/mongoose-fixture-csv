@@ -26,7 +26,9 @@ const csvToMongo = (rows, mongooseScheme, opt) => {
         : isDateValid.test(ele[index])
         ? `"${new Date(ele[index]).toISOString()}"`
         : `"${ele[index]}"`;
-      entityJSON = `${entityJSON},"${key}":${prop}`;
+      if (!opt.skipUndefined || prop !== '"undefined"') {
+        entityJSON = `${entityJSON},"${key}":${prop}`;
+      }
     });
     const entity = JSON.parse(`{${entityJSON.substring(1)}}`);
     promises.push(
@@ -58,10 +60,13 @@ const redCVS = (csvFile, mongooseScheme, opt) => {
             data.toString(),
             { trim: true, delimiter: opt.delimiter || ";" },
             (err, rows) => {
-              if (err) reject(err);
-              csvToMongo(rows, mongooseScheme, opt)
-                .then(objectIDs => resolve(objectIDs))
-                .catch(err => reject(err));
+              if (err) {
+                reject(err);
+              } else {
+                csvToMongo(rows, mongooseScheme, opt)
+                  .then(objectIDs => resolve(objectIDs))
+                  .catch(err => reject(err));
+              }
             }
           );
         }
