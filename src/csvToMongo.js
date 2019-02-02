@@ -18,9 +18,9 @@ const csvToMongo = (rows, mongooseScheme, opt) => {
         // FIXME: 'rojo','azul','ver\'de'
         prop = ele[index]
           .match(isArray)[0]
-          .replace(/^\['/g, '["')
-          .replace(/'\]$/g, '"]')
-          .replace(/','/g, '","');
+          .replace(/^\['/, '["')
+          .replace(/'\]$/, '"]')
+          .replace(/'\s*,\s*'/g, '","');
       } else if (isDateValid.test(ele[index])) {
         prop = `"${new Date(ele[index]).toISOString()}"`;
       } else if (isNotString.test(ele[index])) {
