@@ -1,4 +1,4 @@
-const { redCVS } = require("./src/core");
+const redCSV = require("./src/core");
 
 function fixtureCSV(
   arrayCsvFile,
@@ -14,7 +14,7 @@ function fixtureCSV(
   arrayCsvFile.forEach(({ csv, model }) => {
     promises.push(
       new Promise((resolve, reject) => {
-        redCVS(csv, model, options)
+        redCSV(csv, model, options)
           .then(objectIDs => {
             resolve(objectIDs);
           })

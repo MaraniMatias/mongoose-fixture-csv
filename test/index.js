@@ -2,9 +2,12 @@ const fixtureCSV = require("./../index");
 const mongoose = require("mongoose");
 
 // Models
-const Usuarios = require("./models/Usuario");
-
-const csvModel = [{ csv: "usuarios.csv", model: Usuarios }];
+const csvModel = [
+  // TODO FieldId, usuarios_id
+  // ObjectId true
+  { csv: "usuarios.csv", model: require("./models/Usuario") },
+  { csv: "componente.csv", model: require("./models/componente") }
+];
 
 mongoose.connect(
   "mongodb://localhost/fixture-test",
