@@ -1,0 +1,5 @@
+componente;label;items;multiple;validaciones;mensaje_ayuda;valor_predeterminado
+v-text-field;mail;undefined;undefined;required|email;undefined;undefined
+v-text-field;password;undefined;undefined;required|password;contraseña no valida;undefined
+v-radio;color favorito;['rojo','azul','verde'];false;undefined;undefined;undefined
+v-select;roles;['ADMIN', 'USUARIO'];false;undefined;permisos para usar la app;0

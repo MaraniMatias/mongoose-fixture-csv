@@ -3,9 +3,12 @@ const mongoose = require("mongoose");
 
 // Models
 const csvModel = [
-  // TODO FieldId, usuarios_id
-  // ObjectId true
-  { csv: "usuarios.csv", model: require("./models/Usuario") },
+  {
+    csv: "usuarios.csv",
+    model: require("./models/usuario"),
+    fieldId: "usuarios_id",
+    ObjectId: true,
+  },
   { csv: "componente.csv", model: require("./models/componente") }
 ];
 
