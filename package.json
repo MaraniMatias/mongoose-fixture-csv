@@ -1,0 +1,24 @@
+{
+  "name": "mongoose-fixture-csv",
+  "version": "0.0.1",
+  "description": "Import entity form csv file to mongodb using mongoose scheme.",
+  "scripts": {
+    "test": "node ./test/index.js"
+  },
+  "main": "index.js",
+  "author": "Marani Matias Ezequiel <maranimatias@gmail.com> www.qutap.com.ar",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "csv-parse": "^4.3.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^5.12.1",
+    "eslint-config-prettier": "^3.6.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "mocha": "^5.2.0",
+    "mongoose": "^5.4.5",
+    "prettier": "1.16.0"
+  }
+}
