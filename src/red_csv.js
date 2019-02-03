@@ -5,7 +5,7 @@
 const fs = require("fs");
 const path = require("path");
 const parse = require("csv-parse");
-const csvToMongo = require("./csvToMongo");
+const csvToMongo = require("./csv_to_mongo");
 
 const redCSV = (csvFile, mongooseScheme, opt) => {
   const file = opt.basePath ? opt.basePath + "/" + csvFile : csvFile;

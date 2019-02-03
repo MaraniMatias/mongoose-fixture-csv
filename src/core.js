@@ -1,11 +1,38 @@
 // TODO: Ver como inportat objetos completos, armar otro csv que contenga el sub objeto
 // y relacionarlo con el principal por medios de index, algo parecido a SQL
 
-// TODO espesificar path como config
 const fs = require("fs");
 const path = require("path");
 const parse = require("csv-parse");
-const csvToMongo = require("./csvToMongo");
-const redCSV = require("./redCSV");
+const redCSV = require("./red_csv");
 
-module.exports = redCSV;
+function fixtureCSV(
+  arrayCsvFile,
+  options = {
+    showSave: false,
+    delimiter: ";",
+    basePath: undefined,
+    skipUndefined: true
+  }
+) {
+  // Promise all puede ser mala idea, salen juntas
+  let promises = [];
+  arrayCsvFile.forEach(({ csv, model }) => {
+    promises.push(
+      new Promise((resolve, reject) => {
+        redCSV(csv, model, options)
+          .then(objectIDs => {
+            resolve({
+              collectionName: model.collection.name,
+              ids: objectIDs
+            });
+          })
+          .catch(err => {
+            reject(err);
+          });
+      })
+    );
+  });
+  return Promise.all(promises);
+}
+module.exports = fixtureCSV;
