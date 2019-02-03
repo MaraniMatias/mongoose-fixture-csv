@@ -7,7 +7,7 @@ const path = require("path");
 const parse = require("csv-parse");
 const csvToMongo = require("./csv_to_mongo");
 
-const redCSV = (csvFile, mongooseScheme, opt) => {
+const redCSV = (csvFile, mongooseScheme, subObjects, opt) => {
   const file = opt.basePath ? opt.basePath + "/" + csvFile : csvFile;
   let csvFilePath = path.resolve(path.normalize(file));
   return new Promise((resolve, reject) => {

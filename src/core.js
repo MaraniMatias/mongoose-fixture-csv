@@ -20,7 +20,7 @@ function fixtureCSV(
   let promises = [];
   arrayCsvFile.forEach(fixtureConfig => {
     // console.log(fixtureConfig);
-    console.log(makedFixtureConfig(fixtureConfig));
+    // console.log(makedFixtureConfig(fixtureConfig));
     const { csv, model, csvFieldId } = makedFixtureConfig(fixtureConfig).father;
 
     promises.push(
