@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const parse = require("csv-parse");
 const redCSV = require("./red_csv");
+const makedFixtureConfig = require("./maked_fixture_config");
 
 function fixtureCSV(
   arrayCsvFile,
@@ -17,7 +18,11 @@ function fixtureCSV(
 ) {
   // Promise all puede ser mala idea, salen juntas
   let promises = [];
-  arrayCsvFile.forEach(({ csv, model }) => {
+  arrayCsvFile.forEach(fixtureConfig => {
+    // console.log(fixtureConfig);
+    console.log(makedFixtureConfig(fixtureConfig));
+    const { csv, model, csvFieldId } = makedFixtureConfig(fixtureConfig).father;
+
     promises.push(
       new Promise((resolve, reject) => {
         redCSV(csv, model, options)
