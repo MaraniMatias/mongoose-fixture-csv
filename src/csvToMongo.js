@@ -10,7 +10,8 @@ const isArray = /^\[((?:.+,)(?:.+))\]$/;
 const csvToMongo = (rows, mongooseScheme, opt) => {
   let header = rows.splice(0, 1)[0];
   let promises = [];
-  rows.forEach(ele => {
+  rows.forEach((ele, indexEle) => {
+    let csvId = indexEle;
     let entityJSON = "";
     header.forEach((key, index) => {
       let prop;
@@ -39,7 +40,7 @@ const csvToMongo = (rows, mongooseScheme, opt) => {
           if (err) reject(err);
           else {
             if (opt.showSave) console.log(entityDb);
-            resolve(entityDb._id);
+            resolve({ csvId: csvId, mongoId: entityDb._id });
           }
         });
       })

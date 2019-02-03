@@ -16,7 +16,10 @@ function fixtureCSV(
       new Promise((resolve, reject) => {
         redCSV(csv, model, options)
           .then(objectIDs => {
-            resolve(objectIDs);
+            resolve({
+              collectionName: model.collection.name,
+              ids: objectIDs
+            });
           })
           .catch(err => {
             reject(err);
