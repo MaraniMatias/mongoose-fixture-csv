@@ -10,15 +10,22 @@ const csvModel = [
     // csvFieldId: 'id' // En caso de no estar toma como id el index
     author: {
       csv: "usuario.csv",
-      model: require("./models/usuario"),
-      objectId: true // En caso de no estar es in sub objeto
+      model: require("./models/usuario"), // En caso de no estar es in sub objeto
       // csvFieldId: 'id' // En caso de no estar toma como id el index
+      ref: "story_id"
     }
   },
   */
   {
-    csv: "usuarios.csv",
-    model: require("./models/usuario")
+    csv: "person.csv",
+    model: require("./models/person"),
+    // csvFieldId: index
+    pets: {
+      csv: "pets.csv",
+      // model: require("./models/pet"), // En caso de no estar es in sub objeto
+      csvFieldId: "id",
+      ref: "person_id"
+    }
   },
   {
     csv: "componente.csv",
