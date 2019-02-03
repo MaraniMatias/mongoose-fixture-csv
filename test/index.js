@@ -3,13 +3,27 @@ const mongoose = require("mongoose");
 
 // Models
 const csvModel = [
+  /*
+  {
+    csv: "story.csv",
+    model: require("./models/story"),
+    // csvFieldId: 'id' // En caso de no estar toma como id el index
+    author: {
+      csv: "usuario.csv",
+      model: require("./models/usuario"),
+      objectId: true // En caso de no estar es in sub objeto
+      // csvFieldId: 'id' // En caso de no estar toma como id el index
+    }
+  },
+  */
   {
     csv: "usuarios.csv",
-    model: require("./models/usuario"),
-    fieldId: "usuarios_id",
-    ObjectId: true,
+    model: require("./models/usuario")
   },
-  { csv: "componente.csv", model: require("./models/componente") }
+  {
+    csv: "componente.csv",
+    model: require("./models/componente")
+  }
 ];
 
 mongoose.connect(
@@ -26,7 +40,7 @@ mongoose.connect(
           return;
         })
         .then(objectIDs => {
-          console.log(objectIDs);
+          console.log(objectIDs[0]);
         })
         .finally(() => {
           mongoose.disconnect();
