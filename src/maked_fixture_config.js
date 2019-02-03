@@ -9,8 +9,9 @@ const makedFixtureConfig = fixtureConfig => {
   let subObjects, subModels;
   Object.keys(otherKeys).forEach(key => {
     if (key !== "csv" && key !== "model" && key !== "csvFieldId") {
+      // console.log(otherKeys[key]);
       if (typeof otherKeys[key].csv !== "undefined") {
-        if (typeof key.model === "undefined") {
+        if (typeof otherKeys[key].model === "undefined") {
           subObjects = makedFixtureConfig(otherKeys[key]);
         } else {
           subModels = makedFixtureConfig(otherKeys[key]);

@@ -7,14 +7,13 @@ const path = require("path");
 const parse = require("csv-parse");
 const csvToMongo = require("./csv_to_mongo");
 
-const redCSV = (csvFile, mongooseScheme, opt) => {
+const redCSV = ({ csv, model, csvFieldId, subObjects }, opt) => {
+  console.log(csv, model.collection.name, csvFieldId, subObjects);
   const file =
-    typeof opt.basePath !== "undefined"
-      ? opt.basePath + "/" + csvFile
-      : csvFile;
+    typeof opt.basePath !== "undefined" ? opt.basePath + "/" + csv : csv;
   let csvFilePath = path.resolve(path.normalize(file));
   return new Promise((resolve, reject) => {
-    mongooseScheme.deleteMany({}).then(() => {
+    model.deleteMany({}).then(() => {
       fs.readFile(csvFilePath, "utf8", (err, data) => {
         if (err || !data) {
           reject(err);
@@ -26,8 +25,12 @@ const redCSV = (csvFile, mongooseScheme, opt) => {
               if (err) {
                 reject(err);
               } else {
-                csvToMongo(rows, mongooseScheme, opt)
-                  .then(objectIDs => resolve(objectIDs))
+                csvToMongo(rows, model, opt)
+                  .then(objectIDs =>
+                    resolve({
+                      [model.collection.name]: objectIDs
+                    })
+                  )
                   .catch(err => reject(err));
               }
             }
