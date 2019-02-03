@@ -10,9 +10,9 @@ const makedFixtureConfig = require("./maked_fixture_config");
 function fixtureCSV(
   arrayCsvFile,
   options = {
-    showSave: false,
+    showSave: !false,
     delimiter: ";",
-    basePath: undefined,
+    // basePath: undefined,
     skipUndefined: true
   }
 ) {
@@ -20,8 +20,16 @@ function fixtureCSV(
   let promises = [];
   arrayCsvFile.forEach(fixtureConfig => {
     // console.log(fixtureConfig);
-    // console.log(makedFixtureConfig(fixtureConfig));
-    const { csv, model, csvFieldId } = makedFixtureConfig(fixtureConfig).father;
+    const mfc = makedFixtureConfig(fixtureConfig);
+    if (opt.showSave) console.log(mfc);
+    /*
+    csv: fixtureConfig.csv,
+    csvFieldId: fixtureConfig.csvFieldId,
+    model: fixtureConfig.model,
+    subObjects,
+    subModels
+    */
+    const { csv, model, csvFieldId } = mfc;
 
     promises.push(
       new Promise((resolve, reject) => {
