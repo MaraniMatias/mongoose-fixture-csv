@@ -19,7 +19,7 @@ const csvToMongo = (rows, mongooseScheme, opt) => {
           if (err) reject(err);
           else {
             if (opt.showSave) console.log(entityDb);
-            resolve({ csvId: csvId, mongoId: entityDb._id });
+            resolve({ [csvId]: entityDb._id });
           }
         });
       })

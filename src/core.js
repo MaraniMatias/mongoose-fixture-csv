@@ -23,8 +23,7 @@ function fixtureCSV(
         redCSV(csv, model, options)
           .then(objectIDs => {
             resolve({
-              collectionName: model.collection.name,
-              ids: objectIDs
+              [model.collection.name]: objectIDs
             });
           })
           .catch(err => {

@@ -1,6 +1,6 @@
 {
   "name": "mongoose-fixture-csv",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Import entity form csv file to mongodb using mongoose scheme.",
   "scripts": {
     "test": "node ./test/index.js"
