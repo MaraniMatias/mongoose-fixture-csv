@@ -21,8 +21,7 @@ function fixtureCSV(arrayCsvFile, options) {
     subObjects,
     subModels
     */
-    // console.log(mfc);
-    const subModels = mfc.subModels || {};
+    console.log(mfc);
 
     promises.push(
       new Promise((resolve, reject) => {

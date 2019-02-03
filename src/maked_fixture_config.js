@@ -6,16 +6,12 @@ const makedFixtureConfig = fixtureConfig => {
       otherKeys[key] = fixtureConfig[key];
     }
   });
-  let subObjects, subModels;
+  let subObjectsModels = {};
   Object.keys(otherKeys).forEach(key => {
     if (key !== "csv" && key !== "model" && key !== "csvFieldId") {
       // console.log(otherKeys[key]);
       if (typeof otherKeys[key].csv !== "undefined") {
-        if (typeof otherKeys[key].model === "undefined") {
-          subObjects = makedFixtureConfig(otherKeys[key]);
-        } else {
-          subModels = makedFixtureConfig(otherKeys[key]);
-        }
+        subObjectsModels[key] = makedFixtureConfig(otherKeys[key]);
       }
     }
   });
@@ -23,8 +19,7 @@ const makedFixtureConfig = fixtureConfig => {
     csv: fixtureConfig.csv,
     csvFieldId: fixtureConfig.csvFieldId,
     model: fixtureConfig.model,
-    subObjects,
-    subModels
+    subObjectsModels
   };
 };
 module.exports = makedFixtureConfig;

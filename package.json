@@ -3,7 +3,8 @@
   "version": "0.0.4",
   "description": "Import entity form csv file to mongodb using mongoose scheme.",
   "scripts": {
-    "test": "node ./test/index.js"
+    "test": "node ./test/index.js",
+    "dev": "node --inspect ./test/index.js"
   },
   "main": "index.js",
   "author": "Marani Matias Ezequiel <maranimatias@gmail.com> www.qutap.com.ar",

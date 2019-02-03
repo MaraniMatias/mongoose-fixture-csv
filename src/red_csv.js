@@ -7,8 +7,8 @@ const path = require("path");
 const parse = require("csv-parse");
 const csvToMongo = require("./csv_to_mongo");
 
-const redCSV = ({ csv, model, csvFieldId, subObjects }, opt) => {
-  console.log(csv, model.collection.name, csvFieldId, subObjects);
+const redCSV = ({ csv, model, csvFieldId, subObjectsModels }, opt) => {
+  console.log(csv, model.collection.name, csvFieldId, subObjectsModels);
   const file =
     typeof opt.basePath !== "undefined" ? opt.basePath + "/" + csv : csv;
   let csvFilePath = path.resolve(path.normalize(file));
