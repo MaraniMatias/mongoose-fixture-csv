@@ -13,19 +13,17 @@ function fixtureCSV(arrayCsvFile, options) {
   let promises = [];
   arrayCsvFile.forEach(fixtureConfig => {
     // console.log(fixtureConfig);
-    const mfc = makedFixtureConfig(fixtureConfig);
     /*
     csv: fixtureConfig.csv,
     csvFieldId: fixtureConfig.csvFieldId,
     model: fixtureConfig.model,
-    subObjects,
-    subModels
+    subObjectsOrModels
     */
+    // const mfc = makedFixtureConfig(fixtureConfig);
     // console.log(mfc);
-
     promises.push(
       new Promise((resolve, reject) => {
-        readCSV(mfc, options)
+        readCSV(makedFixtureConfig(fixtureConfig), options)
           .then(objectIDs => {
             resolve(objectIDs);
           })
