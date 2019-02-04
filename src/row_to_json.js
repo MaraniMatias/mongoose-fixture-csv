@@ -26,7 +26,7 @@ module.exports = (csvHeaderId, header, row, opt = { skipUndefined: true }) => {
       } else {
         prop = `"${row[index]}"`;
       }
-      if (opt.skipUndefined || prop !== '"undefined"') {
+      if (!opt.skipUndefined || prop !== '"undefined"') {
         entityJSON = `${entityJSON},"${key}":${prop}`;
       }
     }

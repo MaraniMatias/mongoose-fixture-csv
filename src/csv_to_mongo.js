@@ -4,34 +4,43 @@ const rowToJson = require("./row_to_json");
 const makeSubObject = ({ entityId, entity }, subObjectsModels, opt) => {
   // console.log(subObjectsModels);
   return new Promise((resolve, reject) => {
-    Object.keys(subObjectsModels).forEach(key => {
-      const { csv, model, csvFieldId, ref } = subObjectsModels[key];
-      if (typeof csv === "string") {
-        // console.log("subObject", key, model, subObjectsModels[key]);
-        readCSVFile(csv, opt).then(rows => {
-          let header = rows.splice(0, 1)[0];
-          let indexRef = header.indexOf(ref);
-          entity[key] = [];
-          if (typeof model === "undefined") {
-            rows
-              .filter(ele => entityId === ele[indexRef])
-              .forEach(row => {
-                entity[key].push(
-                  JSON.parse(rowToJson(csvFieldId, header, row, opt))
-                );
-              });
-          } else {
-            // TODO es un modelo, fijarese si esta en db o guardarlo
-          }
-          // console.log("father", entityId, "\n=>", entity);
-          resolve({ entityId, entity });
-        });
-      }
-    });
+    let keys = Object.keys(subObjectsModels);
+    if (keys.length === 0) {
+      resolve({ entityId, entity });
+    } else {
+      keys.forEach(key => {
+        const { csv, model, csvFieldId, ref } = subObjectsModels[key];
+        if (typeof csv === "string") {
+          // console.log("subObject", key, model, subObjectsModels[key]);
+          readCSVFile(csv, opt).then(rows => {
+            let header = rows.splice(0, 1)[0];
+            let indexRef = header.indexOf(ref);
+            entity[key] = [];
+            if (typeof model === "undefined") {
+              rows
+                .filter(ele => entityId === ele[indexRef])
+                .forEach(row => {
+                  entity[key].push(
+                    JSON.parse(rowToJson(csvFieldId, header, row, opt))
+                  );
+                });
+            } else {
+              // TODO es un modelo, fijarese si esta en db o guardarlo
+            }
+            // console.log("father", entityId, "\n=>", entity);
+            resolve({ entityId, entity });
+          });
+        }
+      });
+    }
   });
 };
 
-const csvToEntity = (header, row, { csvFieldId, subObjectsModels }, opt) => {
+const csvToEntity = (
+  { header, row, indexEle },
+  { csvFieldId, subObjectsModels },
+  opt
+) => {
   let indexId = header.indexOf(csvFieldId);
   let entityId = indexId >= 0 ? row[indexId] : indexEle;
   // console.log("father", row, "->", entityId);
@@ -39,7 +48,7 @@ const csvToEntity = (header, row, { csvFieldId, subObjectsModels }, opt) => {
     let entity = JSON.parse(rowToJson(csvFieldId, header, row, opt));
     makeSubObject({ entityId, entity }, subObjectsModels, opt)
       .then(entity => {
-        // console.log("===> entity\n\t", entity);
+        // console.log("id: %s \nentity:", entityId, entity);
         resolve(entity);
       })
       .catch(e => reject(e));
@@ -53,8 +62,7 @@ const csvToMongo = (rows, { model, csvFieldId, subObjectsModels }, opt) => {
     promise.push(
       new Promise((resolve, reject) => {
         csvToEntity(
-          header,
-          row,
+          { header, row, indexEle },
           { model, csvFieldId, subObjectsModels },
           opt
         ).then(({ entityId, entity }) => {

@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 
 // Models
 const csvModel = [
-  /*
-  {
+  /*{
     csv: "story.csv",
     model: require("./models/story"),
     // csvFieldId: 'id' // En caso de no estar toma como id el index
@@ -14,12 +13,11 @@ const csvModel = [
       // csvFieldId: 'id' // En caso de no estar toma como id el index
       ref: "story_id"
     }
-  },
+  },*/
   {
     csv: "componente.csv",
-     model: require("./models/componente")
-   }
-  */
+    model: require("./models/componente")
+  },
   {
     csv: "person.csv",
     model: require("./models/person"),
