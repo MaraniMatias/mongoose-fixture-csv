@@ -8,7 +8,7 @@ const parse = require("csv-parse");
 const csvToMongo = require("./csv_to_mongo");
 
 const redCSV = ({ csv, model, csvFieldId, subObjectsModels }, opt) => {
-  console.log(csv, model.collection.name, csvFieldId, subObjectsModels);
+  // console.log(csv, model.collection.name, csvFieldId, subObjectsModels);
   const file =
     typeof opt.basePath !== "undefined" ? opt.basePath + "/" + csv : csv;
   let csvFilePath = path.resolve(path.normalize(file));
@@ -25,7 +25,11 @@ const redCSV = ({ csv, model, csvFieldId, subObjectsModels }, opt) => {
               if (err) {
                 reject(err);
               } else {
-                csvToMongo(rows, model, opt)
+                csvToMongo(
+                  rows,
+                  { csv, model, csvFieldId, subObjectsModels },
+                  opt
+                )
                   .then(objectIDs =>
                     resolve({
                       [model.collection.name]: objectIDs
