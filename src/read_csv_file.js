@@ -2,31 +2,28 @@ const fs = require("fs");
 const path = require("path");
 const parse = require("csv-parse");
 
-const readCSVFile = (csv, opt) => {
+module.exports = (csv, opt) => {
   let csvFilePath = path.resolve(
     path.normalize(
       typeof opt.basePath !== "undefined" ? opt.basePath + "/" + csv : csv
     )
   );
   return new Promise((resolve, reject) => {
-    fs.readFile(csvFilePath, "utf8", (err, data) => {
-      if (err || !data) {
-        resolve(new Error(err.message));
-        // reject(err);
-      } else {
-        parse(
-          data.toString(),
-          { trim: true, delimiter: opt.delimiter || ";" },
-          (err, rows) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(rows);
-            }
+    try {
+      const data = fs.readFileSync(csvFilePath, "utf8");
+      parse(
+        data.toString(),
+        { trim: true, delimiter: opt.delimiter || ";" },
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
           }
-        );
-      }
-    });
+        }
+      );
+    } catch (err) {
+      resolve(new Error(err.message));
+    }
   });
 };
-module.exports = readCSVFile;
