@@ -23,10 +23,8 @@ mongoose.connect(
   "mongodb://localhost/fixture-test",
   { useCreateIndex: true, useNewUrlParser: true },
   err => {
-    if (err) {
-      return console.error(err);
-    } else {
-      console.log("Conexón a la base de datos establecida correctamente.");
+    if (err) { return console.error(err); }
+    else {
       fixtureCSV(csvModel, { basePath: __dirname + "/csv/", delimiter: ";" })
         .catch(err => {
           console.error(err.message);
@@ -66,9 +64,10 @@ module.exports = mongoose.model("Usuarios", schema);
 
 __CSV File__
 
-nombre;mail;password
-Matias;admin@gmail.com;123456
-Ezequiel;usuario@mail.com;123456
+|name|mail|password|
+|:---|:---|:-------|
+|Matias|admin@gmail.com|123456|
+|Ezequiel|usuario@mail.com|123456|
 
 
 __Fixture Options__
@@ -81,3 +80,75 @@ options = {
   skipUndefined: true
 }
 ```
+
+### Sub object
+
+__Mongoose Models__
+
+```javascript
+const mongoose = require("mongoose");
+const schema = mongoose.Schema({
+  name: String,
+  pets: [
+    {
+      name: String,
+      age: Number
+    }
+  ]
+});
+module.exports = mongoose.model("Person", schema);
+```
+
+__CSV File__
+
+For pets
+
+|id|name|age|person_id|
+|:-|:---|:--|:--------|
+|1|pet_id_1_p0|10|0|
+|2|pet_id_2_p1|20|1|
+|3|pet_id_3_p1|30|1|
+|4|pet_id_4_p0|40|0|
+
+For person
+
+|name|id|
+|:---|:-|
+|persona_id_0|0|
+|persona_id_1|1|
+|persona_id_2|2|
+
+__You fixture file__
+
+```javascript
+const fixtureCSV = require("./../index");
+const mongoose = require("mongoose");
+
+// Models
+const csvModel = [
+  {
+    csv: "person.csv",
+    model: require("./models/person"),
+    csvFieldId: "id", // default index
+    pets: {
+      csv: "pets.csv",
+      csvFieldId: "id",
+      ref: "person_id"
+    }
+  }
+];
+
+mongoose.connect(
+  "mongodb://localhost/fixture-test",
+  { useCreateIndex: true, useNewUrlParser: true },
+  err => {
+    if (err) { return console.error(err); }
+    else {
+      fixtureCSV(csvModel, { basePath: __dirname + "/csv/" })
+        .catch(err => { console.error(err.message); return; })
+        .finally(() => { mongoose.disconnect();});
+    }
+  }
+);
+```
+
