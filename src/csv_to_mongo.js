@@ -1,7 +1,4 @@
-const fs = require("fs");
-const path = require("path");
-const parse = require("csv-parse");
-
+const readCSVFile = require("./read_csv_file");
 const rowToJson = require("./row_to_json");
 // NOTE: Fechas con formate yyyy-mm-ddThh:mm:ss
 // NOTE: Fechas con formate yyyy-mm-ddThh:mm:ss.dddZ
@@ -17,18 +14,35 @@ const csvToMongo = (rows, { model, csvFieldId, subObjectsModels }, opt) => {
   rows.forEach((row, indexEle) => {
     let indexId = header.indexOf(csvFieldId);
     let entityId = indexId >= 0 ? row[indexId] : indexEle;
-    let entity = JSON.parse(rowToJson(entityId, header, row, opt));
+    let entity = JSON.parse(rowToJson(csvFieldId, header, row, opt));
 
     // Join subObjectsModels
     Object.keys(subObjectsModels).forEach(key => {
-      console.log(entityId, key, subObjectsModels[key]);
-      /*
-csv: 'pets.csv',
-csvFieldId: 'id',
-model: undefined,
-subObjectsModels: {}
-*/
-      entity[key] = { name: "ss" };
+      // console.log(entityId, key, subObjectsModels[key]);
+      const subObject = subObjectsModels[key];
+      if (typeof subObject.csv === "string") {
+        readCSVFile(subObject.csv, opt)
+          .then(rows => {
+            if (typeof subObject.model === "undefined") {
+              // console.log(entityId, key, rows, subObject.ref);
+              let header = rows.splice(0, 1)[0];
+              let indexId = header.indexOf(subObject.csvFieldId);
+              let indexRef = header.indexOf(subObject.ref);
+              rows
+                .filter(ele => entityId === ele[indexRef])
+                .forEach((row, indexEle) => {
+                  let entityId = indexId >= 0 ? row[indexId] : indexEle;
+                  entity[key] = JSON.parse(
+                    rowToJson(subObject.csvFieldId, header, row, opt)
+                  );
+                  console.log(entity);
+                });
+            } else {
+              // TODO es un modelo, fijarese si esta en db o guardarlo
+            }
+          })
+          .catch(err => new Error(err));
+      }
     });
 
     promises.push(

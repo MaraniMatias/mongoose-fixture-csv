@@ -14,6 +14,7 @@ const makedFixtureConfig = fixtureConfig => {
     csv: fixtureConfig.csv,
     csvFieldId: fixtureConfig.csvFieldId,
     model: fixtureConfig.model,
+    ref: fixtureConfig.ref,
     subObjectsModels
   };
 };
