@@ -4,7 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const parse = require("csv-parse");
-const redCSV = require("./red_csv");
+const readCSV = require("./read_csv");
 const makedFixtureConfig = require("./maked_fixture_config");
 
 function fixtureCSV(arrayCsvFile, options) {
@@ -21,11 +21,11 @@ function fixtureCSV(arrayCsvFile, options) {
     subObjects,
     subModels
     */
-    console.log(mfc);
+    // console.log(mfc);
 
     promises.push(
       new Promise((resolve, reject) => {
-        redCSV(mfc, options)
+        readCSV(mfc, options)
           .then(objectIDs => {
             resolve(objectIDs);
           })

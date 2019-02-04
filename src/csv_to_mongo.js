@@ -1,3 +1,7 @@
+const fs = require("fs");
+const path = require("path");
+const parse = require("csv-parse");
+
 const rowToJson = require("./row_to_json");
 // NOTE: Fechas con formate yyyy-mm-ddThh:mm:ss
 // NOTE: Fechas con formate yyyy-mm-ddThh:mm:ss.dddZ
@@ -18,6 +22,13 @@ const csvToMongo = (rows, { model, csvFieldId, subObjectsModels }, opt) => {
     // Join subObjectsModels
     Object.keys(subObjectsModels).forEach(key => {
       console.log(entityId, key, subObjectsModels[key]);
+      /*
+csv: 'pets.csv',
+csvFieldId: 'id',
+model: undefined,
+subObjectsModels: {}
+*/
+      entity[key] = { name: "ss" };
     });
 
     promises.push(
