@@ -10,20 +10,22 @@ const redCSV = ({ csv, model, csvFieldId, subObjectsModels }, opt) => {
     subObjectsModels
   );
   */
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     model.deleteMany({}).then(() => {
       readCSVFile(csv, opt)
         .then(rows => {
           csvToMongo(rows, { csv, model, csvFieldId, subObjectsModels }, opt)
-            .then(objectIDs =>
+            .then(objectIDs => {
               resolve({
                 [model.collection.name]: objectIDs
-              })
-            )
-            .catch(err => reject(err));
+                  .map(ele => Object.keys(ele).map(key => ele[key]))
+                  .map(ele => ele[0])
+              });
+            })
+            .catch(err => resolve(err));
         })
         .catch(err => {
-          reject(err);
+          resolve(err);
         });
     });
   });

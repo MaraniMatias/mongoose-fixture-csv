@@ -3,7 +3,7 @@ const rowToJson = require("./row_to_json");
 
 const makeSubObject = ({ entityId, entity }, subObjectsModels, opt) => {
   // console.log(subObjectsModels);
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     let keys = Object.keys(subObjectsModels);
     if (keys.length === 0) {
       resolve({ entityId, entity });
@@ -44,14 +44,14 @@ const csvToEntity = (
   let indexId = header.indexOf(csvFieldId);
   let entityId = indexId >= 0 ? row[indexId] : indexEle;
   // console.log("father", row, "->", entityId);
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     let entity = JSON.parse(rowToJson(csvFieldId, header, row, opt));
     makeSubObject({ entityId, entity }, subObjectsModels, opt)
       .then(entity => {
         // console.log("id: %s \nentity:", entityId, entity);
         resolve(entity);
       })
-      .catch(e => reject(e));
+      .catch(e => resolve(e));
   });
 };
 
@@ -60,7 +60,7 @@ const csvToMongo = (rows, { model, csvFieldId, subObjectsModels }, opt) => {
   let header = rows.splice(0, 1)[0];
   rows.forEach((row, indexEle) => {
     promise.push(
-      new Promise((resolve, reject) => {
+      new Promise(resolve => {
         csvToEntity(
           { header, row, indexEle },
           { model, csvFieldId, subObjectsModels },
@@ -68,7 +68,7 @@ const csvToMongo = (rows, { model, csvFieldId, subObjectsModels }, opt) => {
         ).then(({ entityId, entity }) => {
           // console.log("csvToEntity =>\nid: %s", entityId, entity);
           new model(entity).save((err, entityDb) => {
-            if (err) reject(err);
+            if (err) resolve(err);
             else {
               if (opt.showSave) console.log("Entity saved \n", entityDb);
               resolve({ [entityId]: entityDb._id });

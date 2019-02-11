@@ -1,9 +1,5 @@
 // TODO: Ver como inportat objetos completos, armar otro csv que contenga el sub objeto
 // y relacionarlo con el principal por medios de index, algo parecido a SQL
-
-const fs = require("fs");
-const path = require("path");
-const parse = require("csv-parse");
 const readCSV = require("./read_csv");
 const makedFixtureConfig = require("./maked_fixture_config");
 
@@ -22,14 +18,12 @@ function fixtureCSV(arrayCsvFile, options) {
     // const mfc = makedFixtureConfig(fixtureConfig);
     // console.log(mfc);
     promises.push(
-      new Promise((resolve, reject) => {
+      new Promise(resolve => {
         readCSV(makedFixtureConfig(fixtureConfig), options)
           .then(objectIDs => {
             resolve(objectIDs);
           })
-          .catch(err => {
-            reject(err);
-          });
+          .catch(err => resolve(err));
       })
     );
   });
