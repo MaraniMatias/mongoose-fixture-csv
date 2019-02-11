@@ -45,7 +45,7 @@ mongoose.connect(
           return;
         })
         .then(objectIDs => {
-          console.log(objectIDs[0]);
+          console.log(objectIDs);
         })
         .finally(() => {
           mongoose.disconnect();

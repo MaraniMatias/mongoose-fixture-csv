@@ -152,3 +152,18 @@ mongoose.connect(
 );
 ```
 
+__With sub models__
+
+```javascript
+const fixtureCSV = require("mongoose-fixture-csv");
+const Group = require("./../../../models/grupo_componente");
+
+fixtureCSV([{ csv, model: require("./../../../models/componente") }], {
+  basePath: __dirname + "/"
+}).then(objectIDs => {
+  new Group({ nombre: "Grupos", componentes: objectIDs.componentes }).save((err, general) => {
+  if(err) { console.error(err) }
+  else { console.log(general) }
+  });
+});
+```
