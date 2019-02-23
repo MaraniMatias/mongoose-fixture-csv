@@ -3,3 +3,8 @@ v-text-field;mail;undefined;undefined;required|email;undefined;undefined
 v-text-field;password;undefined;undefined;required|password;contraseña no valida;undefined
 v-radio;color favorito;['rojo','azul','verde'];false;undefined;undefined;undefined
 v-select;roles;['ADMIN', 'USUARIO'];false;undefined;permisos para usar la app;0
+
+c-select;Sector;[‘Gastronomico’,’Salud’];undefined;undefined;undefined;undefined
+c-select;Rubro;[‘Bar’,‘restaurant’];undefined;undefined;undefined;undefined
+c-numeric;Cantida de locales;undefined;undefined;undefined;undefined;undefined
+

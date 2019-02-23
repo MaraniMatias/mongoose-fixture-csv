@@ -25,16 +25,18 @@ mongoose.connect(
   err => {
     if (err) { return console.error(err); }
     else {
-      fixtureCSV(csvModel, { basePath: __dirname + "/csv/", delimiter: ";" })
-        .catch(err => {
-          console.error(err.message);
-        })
-        .then(objectIDs => {
-          console.log(objectIDs);
-        })
-        .finally(() => {
-          mongoose.disconnect();
-        });
+      Usuarios.deleteMany({}).then(() =>
+        fixtureCSV(csvModel, { basePath: __dirname + "/csv/", delimiter: ";" })
+          .catch(err => {
+            console.error(err.message);
+          })
+          .then(objectIDs => {
+            console.log(objectIDs);
+          })
+          .finally(() => {
+            mongoose.disconnect();
+          });
+        )
     }
   }
 );

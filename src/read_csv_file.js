@@ -8,16 +8,19 @@ module.exports = (csv, opt) => {
       typeof opt.basePath !== "undefined" ? opt.basePath + "/" + csv : csv
     )
   );
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     try {
       const data = fs.readFileSync(csvFilePath, "utf8");
       parse(
         data.toString(),
         { trim: true, delimiter: opt.delimiter || ";" },
-        (err, rows) => resolve(err || rows)
+        (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows);
+        }
       );
     } catch (err) {
-      resolve(err);
+      reject(err);
     }
   });
 };
